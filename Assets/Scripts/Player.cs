@@ -37,8 +37,8 @@ public class Player : MonoBehaviour
     }
 
     public void Spawn(GameObject unitPrefab) {
-        Unit unitSpawned = _playManager.Spawn(unitPrefab);
         Vector3 positionToGo = _playManager.GetEmptyPositionForAllyUnit();
+        Unit unitSpawned = _playManager.Spawn(unitPrefab);
         _playManager.AddAllyUnit(unitSpawned);
         MoveCommand moveCommand = new MoveCommand(positionToGo);
         moveCommand.Execute(unitSpawned);

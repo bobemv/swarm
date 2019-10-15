@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayManager : MonoBehaviour
 {
@@ -21,12 +22,15 @@ public class PlayManager : MonoBehaviour
     private Player _player;
     #endregion
 
+    [SerializeField]
+    private List<Button> _unitButtons;
+
     public delegate void MultiDelegate();
     private MultiDelegate updateDelegate;
     // Start is called before the first frame update
     void Start()
     {
-        offsetBetweenAllyUnits = (rightMostPosition.x - leffMostPosition.x) / _maxAllyUnits;
+        offsetBetweenAllyUnits = (rightMostPosition.x - leffMostPosition.x) / (_maxAllyUnits - 1);
         allyUnits = new List<Unit>();
         enemyUnits = new List<Unit>();
 
@@ -40,6 +44,7 @@ public class PlayManager : MonoBehaviour
     {
         allyUnits = allyUnits.FindAll(unit => unit != null);
         enemyUnits = enemyUnits.FindAll(unit => unit != null);
+        DisableButtonsAllyUnits();
         updateDelegate();
     }
 
@@ -67,5 +72,9 @@ public class PlayManager : MonoBehaviour
 
     public void AddEnemyUnit(Unit unit) {
         enemyUnits.Add(unit);
+    }
+
+    private void DisableButtonsAllyUnits() {
+        _unitButtons.ForEach(button => button.interactable = !(allyUnits.Count == _maxAllyUnits));
     }
 }

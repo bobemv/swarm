@@ -1297,6 +1297,10 @@ MonoBehaviour:
   _maxAllyUnits: 10
   _IANormal: {fileID: 2090030717}
   _player: {fileID: 662242451}
+  _unitButtons:
+  - {fileID: 221911633}
+  - {fileID: 1016625613}
+  - {fileID: 1169633178}
 --- !u!4 &2055450332
 Transform:
   m_ObjectHideFlags: 0
@@ -1345,7 +1349,7 @@ MonoBehaviour:
     type: 3}
   _alienStandardPrefab: {fileID: 897900389016041376, guid: 4161bb3458047fd43a35879bf924301b,
     type: 3}
-  _alienCleverRespawnRate: 50
+  _alienCleverRespawnRate: 1.8
   _alienStandardRespawnRate: 0.7
 --- !u!4 &2090030718
 Transform:

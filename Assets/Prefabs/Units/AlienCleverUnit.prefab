@@ -170,6 +170,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   positionToGo: {x: 0, y: 0, z: 0}
-  _lives: 3
+  _maxLives: 3
   _speed: 2
+  _turnRate: 1.5
+  _livesTextPrefab: {fileID: 743003154341952562, guid: 4bb682a092eae5b4b9e7c3d9fc97553f,
+    type: 3}
+  _biteRate: 0.5
+  _biteRadius: 0.5
   _dodgeChance: 0.2
