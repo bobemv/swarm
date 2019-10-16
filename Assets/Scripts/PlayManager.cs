@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class PlayManager : MonoBehaviour
 {
@@ -61,7 +62,10 @@ public class PlayManager : MonoBehaviour
     void Update()
     {
         allyUnits = allyUnits.FindAll(unit => unit != null);
-        enemyUnits = enemyUnits.FindAll(unit => unit != null);
+        //enemyUnits = enemyUnits.FindAll(unit => unit != null);
+        GameObject[] enemyUnitsInstances = GameObject.FindGameObjectsWithTag("Alien");
+        enemyUnits = new List<Unit>(enemyUnitsInstances.Select(enemyUnitsInstance => enemyUnitsInstance.GetComponent<Unit>()));
+        
         UpdateTimer();
         DisableButtonsAllyUnits();
         CheckSelectUnit();

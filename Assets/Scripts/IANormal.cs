@@ -16,27 +16,47 @@ public class IANormal : MonoBehaviour
 
     public delegate void MultiDelegate();
     private MultiDelegate spawnDelegate;
+
+    [SerializeField]
+    private List<GameObject> _hordesPrefabs;
     // Start is called before the first frame update
     public void StartIA()
     {
-        spawnDelegate += SpawnAlienStandard;
-        spawnDelegate += SpawnAlienClever;
+        //spawnDelegate += SpawnAlienStandard;
+        //spawnDelegate += SpawnAlienClever;
+        StartCoroutine(StartHordes());
+    }
+
+    IEnumerator StartHordes() {
+        GameObject currentHordeInstance;
+        int numHordesBeat = 0;
+
+        while (numHordesBeat < _hordesPrefabs.Count) {
+            currentHordeInstance = Instantiate(_hordesPrefabs[numHordesBeat]);
+
+            while(currentHordeInstance != null) {
+                yield return new WaitForSeconds(0.5f);
+            }
+            numHordesBeat++;
+        }
+
+        Debug.Log("YOU WIN!!!");
     }
 
     public void StopIA()
     {
-        spawnDelegate -= SpawnAlienStandard;
-        spawnDelegate -= SpawnAlienClever;
+        //spawnDelegate -= SpawnAlienStandard;
+        //spawnDelegate -= SpawnAlienClever;
     }
 
 
     // Update is called once per frame
     public void UpdateIA()
     {
-        _playManager.enemyUnits.ForEach(SearchTargets);
-        if (spawnDelegate != null) {
+        //_playManager.enemyUnits.ForEach(SearchTargets);
+        /*if (spawnDelegate != null) {
             spawnDelegate();
-        }
+        }*/
 
     }
 
