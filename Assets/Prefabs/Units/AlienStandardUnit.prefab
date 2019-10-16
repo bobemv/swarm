@@ -111,15 +111,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   positionToGo: {x: 0, y: 0, z: 0}
   unitTarget: {fileID: 0}
-  pointTarget: {x: 0, y: 0, z: 0}
-  _maxLives: 2
+  pointTargetv2: {x: 0, y: 0, z: 0}
+  _maxLives: 5
   _livesTextPrefab: {fileID: 743003154341952562, guid: 4bb682a092eae5b4b9e7c3d9fc97553f,
     type: 3}
   _turnRate: 1
-  _speed: 3
+  _speed: 4
   _selectionMark: {fileID: 3547465533181921235}
   radiusStopPosition: 0.5
-  _bulletPrefab: {fileID: 0}
   biteRate: 0.5
 --- !u!1001 &3349765232778172586
 PrefabInstance:

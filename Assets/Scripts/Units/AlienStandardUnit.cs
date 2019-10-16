@@ -2,21 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyUnit : Unit
+public class AlienStandardUnit : EnemyUnit
 {
-    public float biteRate;
-
-    protected IEnemyUnitState unitState;
-    protected IEnemyUnitState unitTargetingState;
-
-    //public float biteRadius;
-
     // Start is called before the first frame update
     override protected void StartUnit()
     {
         base.StartUnit();
 
-        unitState = new IdleEnemyUnitState();
+        unitState = new IdleAlienStandardState();
         unitTargetingState = new ClosestTargetingEnemyUnitState();
     }
 
@@ -38,11 +31,5 @@ public class EnemyUnit : Unit
         }
         unitState.Update(this, _playManager);
 
-    }
-
-    virtual public void Bite() {
-        
-        unitTarget.Damage();
-        return;
     }
 }

@@ -95,7 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   positionToGo: {x: 0, y: 0, z: 0}
   unitTarget: {fileID: 0}
-  pointTarget: {x: 0, y: 0, z: 0}
+  pointTargetv2: {x: 0, y: 0, z: 0}
   _maxLives: 5
   _livesTextPrefab: {fileID: 743003154341952562, guid: 4bb682a092eae5b4b9e7c3d9fc97553f,
     type: 3}
@@ -202,6 +202,26 @@ PrefabInstance:
     - target: {fileID: 977667435888958621, guid: 525247568ae3bfa4280c5360c78d699f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 977667435888958621, guid: 525247568ae3bfa4280c5360c78d699f,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 977667435888958621, guid: 525247568ae3bfa4280c5360c78d699f,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 333143854181886235, guid: 525247568ae3bfa4280c5360c78d699f,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2254017117713227641, guid: 525247568ae3bfa4280c5360c78d699f,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -5,7 +5,7 @@ using UnityEngine;
 public class MovementEnemyUnitState : IEnemyUnitState
 {
 
-    public IEnemyUnitState CheckChangeState(EnemyUnit unit, PlayManager environment) {
+    virtual public IEnemyUnitState CheckChangeState(EnemyUnit unit, PlayManager environment) {
         if (unit.unitTarget == null) {
             return new IdleEnemyUnitState();
         }
@@ -15,7 +15,7 @@ public class MovementEnemyUnitState : IEnemyUnitState
         return null;
     }
 
-    public void Update(EnemyUnit unit, PlayManager environment) {
+    virtual public void Update(EnemyUnit unit, PlayManager environment) {
         unit.transform.Translate(Vector3.Normalize(new Vector3(unit.unitTarget.transform.position.x - unit.transform.position.x, unit.unitTarget.transform.position.y - unit.transform.position.y, 0)) * unit._speed * Time.deltaTime, Space.World);
     }
 
