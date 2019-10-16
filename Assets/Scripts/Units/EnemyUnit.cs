@@ -4,30 +4,45 @@ using UnityEngine;
 
 public class EnemyUnit : Unit
 {
-    [SerializeField]
-    protected float _biteRate;
+    public float biteRate;
 
-    [SerializeField]
-    protected float _biteRadius;
+    private IEnemyUnitState unitState;
+    private IEnemyUnitState unitTargetingState;
 
-    protected float biteTime;
-    override public void SelectTarget(Unit newTarget) {
-        target = newTarget;
-        positionToGo = newTarget.transform.position;
+    //public float biteRadius;
+
+    // Start is called before the first frame update
+    override protected void StartUnit()
+    {
+        base.StartUnit();
+
+        unitState = new IdleEnemyUnitState();
+        unitTargetingState = new ClosestTargetingEnemyUnitState();
     }
 
-    override protected void Bite() {
-        if (target == null) {
-            return;
+    // Update is called once per frame
+    override protected void UpdateUnit()
+    {
+        base.UpdateUnit();
+
+        IEnemyUnitState state;
+        state = unitTargetingState.CheckChangeState(this, _playManager);
+        if (state != null) {
+            unitTargetingState = state;
         }
-        if (biteTime > _biteRate && Vector3.Distance(target.transform.position, transform.position) < _biteRadius) {
-            biteTime = 0;
-            target.Damage();
+        unitTargetingState.Update(this, _playManager);
+
+        state = unitState.CheckChangeState(this, _playManager);
+        if (state != null) {
+            unitState = state;
         }
-        biteTime += Time.deltaTime;
+        unitState.Update(this, _playManager);
+
     }
 
-    override protected void UpdateIsMoving() {
-        isMoving = Vector3.Distance(positionToGo, transform.position) > _biteRadius;
+    virtual public void Bite() {
+        
+        unitTarget.Damage();
+        return;
     }
 }

@@ -6,16 +6,13 @@ using UnityEngine.Animations;
 public class Unit : MonoBehaviour
 {
     public Vector3 positionToGo = Vector3.zero;
-    protected bool isMoving;
-    protected Unit target;
+    public Unit unitTarget;
+    public Vector3? pointTarget;
+    public Vector3 pointTargetv2;
 
     [SerializeField]
     protected float _maxLives;
     protected float lives;
-
-    [SerializeField]
-    protected float _speed, _turnRate;
-    
 
     [SerializeField]
     protected GameObject _livesTextPrefab;
@@ -24,14 +21,37 @@ public class Unit : MonoBehaviour
 
     private GameObject livesTextInstance;
 
-    void Start() {
+    [SerializeField]
+    protected float _turnRate;
 
-        CreateAndLinkLivesText();
-        StartCustomUnit();
+    public float _speed;
+    
+
+    [SerializeField]
+    protected MeshRenderer _selectionMark;
+
+    public float radiusStopPosition;
+
+    protected PlayManager _playManager;
+
+    void Start() {
+        StartUnit();
     }
 
-    virtual protected void StartCustomUnit() {
-        return;
+    virtual protected void StartUnit() {
+        _playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
+        CreateAndLinkLivesText();
+    }
+
+    void Update()
+    {
+        UpdateUnit();
+    }
+
+    virtual protected void UpdateUnit() {
+        pointTargetv2 = pointTarget.HasValue ? pointTarget.GetValueOrDefault() : Vector3.zero;
+        UpdateRotation();
+        UpdateLives();
     }
 
     virtual protected void CreateAndLinkLivesText() {
@@ -45,55 +65,20 @@ public class Unit : MonoBehaviour
         source.weight = 1.0f;
         livesTextInstance.GetComponent<PositionConstraint>().AddSource(source);
     }
-    void Update()
-    {
-        UpdateIsMoving();
-        UpdatePosition();
-        UpdateRotation();
-        UpdateLives();
-        Shoot();
-        Bite();
-        UpdateCustomUnit();
-    }
-
-    virtual protected void UpdateIsMoving() {
-        isMoving = Vector3.Distance(positionToGo, transform.position) > 0.05;
-    }
-    virtual protected void UpdatePosition() {
-        if (isMoving) {
-            transform.Translate(Vector3.Normalize(new Vector3(positionToGo.x - transform.position.x, positionToGo.y - transform.position.y, 0)) * _speed * Time.deltaTime, Space.World);
-        }
-    }
 
     virtual protected void UpdateRotation() {
-        if (target == null) {
+        if (unitTarget == null) {
             return;
         }
 
         Vector3 myLocation = transform.position;
-        Vector3 targetLocation = target.transform.position;
+        Vector3 targetLocation = unitTarget.transform.position;
         targetLocation.z = myLocation.z;
         
         Vector3 vectorToTarget = targetLocation - myLocation;
         
         Quaternion targetRotation = Quaternion.LookRotation(forward: Vector3.forward, upwards: vectorToTarget);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * _turnRate);
-    }
-    virtual public void Move(Vector3 newPosition) {
-        positionToGo = newPosition;
-        
-    }
-    virtual protected void Shoot() {
-        return;
-    }
-
-    virtual protected void Bite() {
-        return;
-    }
-
-
-    virtual public void SelectTarget(Unit newTarget) {
-        target = newTarget;
     }
 
     virtual public void Damage() {
@@ -111,7 +96,28 @@ public class Unit : MonoBehaviour
         }
     }
 
-    virtual protected void UpdateCustomUnit() {
-        return;
+    virtual public void SelectUnit(bool isSelected) {
+
+        _selectionMark.enabled = isSelected;
+    }
+
+
+    public IEnumerator UnitSelected() {
+        SelectUnit(true);
+        while(_playManager.unitSelected == this) {
+            if (unitTarget != null) {
+                unitTarget.SelectUnit(true);
+            }
+            if (pointTarget != null) {
+                Debug.DrawLine(pointTarget.GetValueOrDefault() - Vector3.up, pointTarget.GetValueOrDefault() + Vector3.up, Color.red);
+                Debug.DrawLine(pointTarget.GetValueOrDefault() - Vector3.left, pointTarget.GetValueOrDefault() + Vector3.left, Color.red);
+            }
+            yield return null;
+        }
+        SelectUnit(false);
+        if (unitTarget != null) {
+            unitTarget.SelectUnit(false);
+        }
+
     }
 }

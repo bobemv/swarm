@@ -2,24 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoldierDrunkUnit : Unit
+public class SoldierDrunkUnit : AllyUnit
 {
-    [SerializeField]
-    private GameObject _bulletPrefab;
-    
-    [SerializeField]
-    protected float _fireRate;
-    private float _currentTime = 0;
-    override protected void Shoot() {
+
+    override public void Shoot() {
         
-        if (_currentTime > _fireRate) {
-            Instantiate(_bulletPrefab, transform.position, transform.rotation);
-            Instantiate(_bulletPrefab, transform.position, Quaternion.Inverse(transform.rotation));
-            _currentTime = 0;
-        }
-        else {
-            _currentTime += Time.deltaTime;
-        }
+        Instantiate(_bulletPrefab, transform.position, transform.rotation);
+        Instantiate(_bulletPrefab, transform.position, Quaternion.Inverse(transform.rotation));
         return;
     }
 }

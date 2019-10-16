@@ -20,8 +20,7 @@ public class Bullet : MonoBehaviour
 
 
     private void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("name:" + other.gameObject.name);
-        if (other.gameObject.GetComponent<Unit>()) {
+        if (other.gameObject.tag == "Alien" && other.gameObject.GetComponent<Unit>()) {
             other.gameObject.GetComponent<Unit>().Damage();
             Destroy(gameObject);
         }

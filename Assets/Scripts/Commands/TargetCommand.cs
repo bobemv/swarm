@@ -9,6 +9,6 @@ public class TargetCommand : ICommand
         target = _target;
     }
     public void Execute(Unit unit) {
-        unit.SelectTarget(target);
+        //unit.SelectTarget(target);
     }
 }

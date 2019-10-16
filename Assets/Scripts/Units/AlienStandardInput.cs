@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoldierUnit : AllyUnit
+public class AlienStandardInput : EnemyUnit
 {
-    
+
 }

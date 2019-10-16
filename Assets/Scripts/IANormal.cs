@@ -17,17 +17,26 @@ public class IANormal : MonoBehaviour
     public delegate void MultiDelegate();
     private MultiDelegate spawnDelegate;
     // Start is called before the first frame update
-    void Start()
+    public void StartIA()
     {
         spawnDelegate += SpawnAlienStandard;
         spawnDelegate += SpawnAlienClever;
     }
 
+    public void StopIA()
+    {
+        spawnDelegate -= SpawnAlienStandard;
+        spawnDelegate -= SpawnAlienClever;
+    }
+
+
     // Update is called once per frame
     public void UpdateIA()
     {
         _playManager.enemyUnits.ForEach(SearchTargets);
-        spawnDelegate();
+        if (spawnDelegate != null) {
+            spawnDelegate();
+        }
 
     }
 
@@ -55,7 +64,7 @@ public class IANormal : MonoBehaviour
             return;
         }
         alienStandardTimer = 0;
-        Unit unitSpawned = _playManager.Spawn(_alienStandardPrefab);
+        Unit unitSpawned = Instantiate(_alienStandardPrefab).GetComponent<Unit>();
         unitSpawned.transform.position = new Vector3(Random.Range(-6.5f, 6.5f), unitSpawned.transform.position.y, unitSpawned.transform.position.z);
         _playManager.AddEnemyUnit(unitSpawned);
     }
@@ -66,7 +75,7 @@ public class IANormal : MonoBehaviour
             return;
         }
         alienCleverTimer = 0;
-        Unit unitSpawned = _playManager.Spawn(_alienCleverPrefab);
+        Unit unitSpawned = Instantiate(_alienCleverPrefab).GetComponent<Unit>();
         unitSpawned.transform.position = new Vector3(Random.Range(-6.5f, 6.5f), unitSpawned.transform.position.y, unitSpawned.transform.position.z);
         _playManager.AddEnemyUnit(unitSpawned);
     }

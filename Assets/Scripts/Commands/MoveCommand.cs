@@ -9,6 +9,6 @@ public class MoveCommand : ICommand
         position = _position;
     }
     public void Execute(Unit unit) {
-        unit.Move(position);
+        //unit.Move(position);
     }
 }
