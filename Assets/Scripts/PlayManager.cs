@@ -40,8 +40,8 @@ public class PlayManager : MonoBehaviour
 
     private float timer;
 
-    private float limitLineTopAllyUnit = -1.66f;
-    private float limitLineBottomAllyUnit = -2.66f;
+    private float limitLineTopAllyUnit = -1f;
+    private float limitLineBottomAllyUnit = -2.9f;
 
     public Unit unitSelected;
     public Unit unitTarget;
@@ -59,6 +59,7 @@ public class PlayManager : MonoBehaviour
     }
 
     // Update is called once per frame
+    
     void Update()
     {
         allyUnits = allyUnits.FindAll(unit => unit != null);
@@ -69,6 +70,29 @@ public class PlayManager : MonoBehaviour
         UpdateTimer();
         DisableButtonsAllyUnits();
         CheckSelectUnit();
+
+        /*if (clickUp.HasValue && clickDown.HasValue) {
+            LineRenderer line = GetComponent<LineRenderer>();
+            Vector3 topLeft = new Vector3(clickDown.GetValueOrDefault().x, clickDown.GetValueOrDefault().y, -1);
+            Vector3 topRight = new Vector3(clickUp.GetValueOrDefault().x, clickDown.GetValueOrDefault().y, -1);
+            Vector3 bottomLeft = new Vector3(clickDown.GetValueOrDefault().x, clickUp.GetValueOrDefault().y, -1);
+            Vector3 bottomRight = new Vector3(clickUp.GetValueOrDefault().x, clickUp.GetValueOrDefault().y, -1);;
+            Vector3[] lineVertices = { topLeft, bottomLeft, bottomRight, topRight, topLeft };
+            line.positionCount = 5;
+            line.SetPositions(lineVertices);
+
+            //Rect areaSelected = new Rect((topLeft.x + topRight.x) / 2, (topLeft.y + bottomLeft.y) / 2, Mathf.Abs(topLeft.x - topRight.x), Mathf.Abs(topLeft.y - bottomLeft.y));
+            Rect areaSelected = new Rect(topLeft.x , topLeft.y, Mathf.Abs(topLeft.x - topRight.x), Mathf.Abs(topLeft.y - bottomLeft.y));
+            Debug.Log(areaSelected.ToString());
+            unitsSelected = new List<Unit>(allyUnits.Where(allyUnit => {
+                Debug.Log("Check: " + allyUnit.transform.position + " is " + areaSelected.Contains(new Vector2(allyUnit.transform.position.x, allyUnit.transform.position.y)));
+                return areaSelected.Contains(allyUnit.transform.position);
+            }));
+
+            unitsSelected.ForEach(unitSelected => {
+                StartCoroutine(unitSelected.UnitSelected());
+            });
+        }*/
         updateDelegate();
     }
 
@@ -113,10 +137,19 @@ public class PlayManager : MonoBehaviour
         //
     }
 
+    private List<Unit> unitsSelected;
+
+    private Vector3? clickDown;
+    private Vector3? clickUp;
+
+    public bool isUnitSelected(Unit unit) {
+        return unitsSelected.Exists(unitSelected => unitSelected == unit);
+    }
     private void CheckSelectUnit() {
         if (Input.GetKeyDown(KeyCode.Mouse1)) {
             //UnselectAll();
             unitSelected = null;
+            unitsSelected = new List<Unit>();
             unitTarget = null;
             pointTarget = null;
         }
@@ -131,6 +164,8 @@ public class PlayManager : MonoBehaviour
             {
                 Unit unit = hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
                 unitSelected = unit;
+                unitsSelected = new List<Unit>();
+                unitsSelected.Add(unit);
                 StartCoroutine(unitSelected.UnitSelected());
                 return;
             }
@@ -153,6 +188,8 @@ public class PlayManager : MonoBehaviour
             {
                 Unit unit = hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
                 unitSelected = unit;
+                unitsSelected = new List<Unit>();
+                unitsSelected.Add(unit);
                 StartCoroutine(unitSelected.UnitSelected());
                 pointTarget = null;
                 unitTarget = null;
@@ -173,6 +210,20 @@ public class PlayManager : MonoBehaviour
             }
             return;
         }
+/* 
+        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+            clickDown = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 9f));
+        }
+
+        if (Input.GetKey(KeyCode.Mouse0)) {
+            clickUp = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 9f));
+        }
+
+        if (Input.GetKeyUp(KeyCode.Mouse0)) {
+            //clickUp = null;
+            //clickDown = null;
+        }
+        */
     }
 
     public void Spawn(GameObject unitPrefab) {

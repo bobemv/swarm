@@ -104,7 +104,7 @@ public class Unit : MonoBehaviour
 
     public IEnumerator UnitSelected() {
         SelectUnit(true);
-        while(_playManager.unitSelected == this) {
+        while(_playManager.isUnitSelected(this)) {
             if (unitTarget != null) {
                 unitTarget.SelectUnit(true);
             }

@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1779201325949617837}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 10, z: -1}
+  m_LocalPosition: {x: 0, y: 6.5, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -45,5 +45,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alienPrefab: {fileID: 897900389016041376, guid: 4161bb3458047fd43a35879bf924301b,
     type: 3}
-  _spawnTime: 0.2
+  _spawnTime: 0.1
   _number: 20000000
+  _limit: 0

@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 12a2b2b3b3101d249bff38998b2fdd87, type: 2}
+  - {fileID: 2100000, guid: 7572bfd05e5904b4a899aa95c417c3e7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -113,7 +113,7 @@ MonoBehaviour:
   positionToGo: {x: 0, y: 0, z: 0}
   unitTarget: {fileID: 0}
   pointTargetv2: {x: 0, y: 0, z: 0}
-  _maxLives: 100
+  _maxLives: 500
   _livesTextPrefab: {fileID: 743003154341952562, guid: 4bb682a092eae5b4b9e7c3d9fc97553f,
     type: 3}
   _turnRate: 0.3

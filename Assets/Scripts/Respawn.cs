@@ -11,6 +11,10 @@ public class Respawn : MonoBehaviour
     private float _spawnTime;
     [SerializeField]
     private int _number;
+
+    [SerializeField]
+    private float _limit;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +30,8 @@ public class Respawn : MonoBehaviour
         Debug.Log("SPAWN OF " + _alienPrefab.name + " STARTED");
         float currentNumber = 0;
         while (currentNumber < _number) {
+            float newPositionX = Random.Range(Mathf.Max(-_limit, -7), Mathf.Min(_limit, 7));
+            transform.Translate(new Vector3(newPositionX, 0, 0));
             Instantiate(_alienPrefab, transform.position, Quaternion.identity);
             currentNumber++;
             yield return new WaitForSeconds(_spawnTime);

@@ -99,7 +99,7 @@ MonoBehaviour:
   _maxLives: 2
   _livesTextPrefab: {fileID: 743003154341952562, guid: 4bb682a092eae5b4b9e7c3d9fc97553f,
     type: 3}
-  _turnRate: 1.5
+  _turnRate: 3
   _speed: 3
   _selectionMark: {fileID: 2647238759560091105}
   radiusStopPosition: 0.5
@@ -214,15 +214,15 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 333143854181886235, guid: 525247568ae3bfa4280c5360c78d699f,
-        type: 3}
-      propertyPath: m_Radius
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 2254017117713227641, guid: 525247568ae3bfa4280c5360c78d699f,
         type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 333143854181886235, guid: 525247568ae3bfa4280c5360c78d699f,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 525247568ae3bfa4280c5360c78d699f, type: 3}

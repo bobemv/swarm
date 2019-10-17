@@ -89,7 +89,7 @@ Transform:
   m_GameObject: {fileID: 897900389016041376}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 10, z: -1}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0}
   m_Children:
   - {fileID: 5105002774259962326}
   - {fileID: 221757566234159779}
@@ -157,7 +157,7 @@ MonoBehaviour:
   positionToGo: {x: 0, y: 0, z: 0}
   unitTarget: {fileID: 0}
   pointTargetv2: {x: 0, y: 0, z: 0}
-  _maxLives: 3
+  _maxLives: 5
   _livesTextPrefab: {fileID: 743003154341952562, guid: 4bb682a092eae5b4b9e7c3d9fc97553f,
     type: 3}
   _turnRate: 1.5

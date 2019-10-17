@@ -47,5 +47,5 @@ MonoBehaviour:
   - {fileID: 1779201325949617837, guid: 2148054cb6d6d0f409d5c0337e8768a2, type: 3}
   - {fileID: 1779201325949617837, guid: 8c0aeb8bff3c2fc42bfb4bbc40fd22e8, type: 3}
   _delays:
-  - 0
-  - 1
+  - 2
+  - 3
