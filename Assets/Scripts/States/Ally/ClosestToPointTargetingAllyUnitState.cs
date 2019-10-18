@@ -6,7 +6,7 @@ public class ClosestToPointTargetingAllyUnitState : IAllyUnitState
 {
 
     public IAllyUnitState CheckChangeState(AllyUnit unit, PlayManager environment) {
-        if (unit == environment.unitSelected) {
+        if (unit == environment.isUnitSelected(unit)) {
             if (environment.unitTarget && !environment.pointTarget.HasValue) {
                 return new ClosestTargetingAllyUnitState();
             }
@@ -15,7 +15,7 @@ public class ClosestToPointTargetingAllyUnitState : IAllyUnitState
     }
 
     public void Update(AllyUnit unit, PlayManager environment) {
-        if (environment.pointTarget != null && unit == environment.unitSelected) {
+        if (environment.pointTarget != null && environment.isUnitSelected(unit)) {
             unit.unitTarget = null;
             unit.pointTarget = environment.pointTarget;
         }

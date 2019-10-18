@@ -59,7 +59,7 @@ public class PlayManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    
+
     void Update()
     {
         allyUnits = allyUnits.FindAll(unit => unit != null);
@@ -71,28 +71,30 @@ public class PlayManager : MonoBehaviour
         DisableButtonsAllyUnits();
         CheckSelectUnit();
 
-        /*if (clickUp.HasValue && clickDown.HasValue) {
+        if (clickUp.HasValue && clickDown.HasValue) {
             LineRenderer line = GetComponent<LineRenderer>();
-            Vector3 topLeft = new Vector3(clickDown.GetValueOrDefault().x, clickDown.GetValueOrDefault().y, -1);
-            Vector3 topRight = new Vector3(clickUp.GetValueOrDefault().x, clickDown.GetValueOrDefault().y, -1);
-            Vector3 bottomLeft = new Vector3(clickDown.GetValueOrDefault().x, clickUp.GetValueOrDefault().y, -1);
-            Vector3 bottomRight = new Vector3(clickUp.GetValueOrDefault().x, clickUp.GetValueOrDefault().y, -1);;
+            Vector3 topLeft = new Vector3(Mathf.Min(clickDown.GetValueOrDefault().x, clickUp.GetValueOrDefault().x), Mathf.Max(clickDown.GetValueOrDefault().y, clickUp.GetValueOrDefault().y), -1);
+            Vector3 topRight = new Vector3(Mathf.Max(clickDown.GetValueOrDefault().x, clickUp.GetValueOrDefault().x), Mathf.Max(clickDown.GetValueOrDefault().y, clickUp.GetValueOrDefault().y), -1);
+            Vector3 bottomLeft = new Vector3(Mathf.Min(clickDown.GetValueOrDefault().x, clickUp.GetValueOrDefault().x), Mathf.Min(clickDown.GetValueOrDefault().y, clickUp.GetValueOrDefault().y), -1);
+            Vector3 bottomRight = new Vector3(Mathf.Max(clickDown.GetValueOrDefault().x, clickUp.GetValueOrDefault().x), Mathf.Min(clickDown.GetValueOrDefault().y, clickUp.GetValueOrDefault().y), -1);
+
             Vector3[] lineVertices = { topLeft, bottomLeft, bottomRight, topRight, topLeft };
             line.positionCount = 5;
             line.SetPositions(lineVertices);
 
-            //Rect areaSelected = new Rect((topLeft.x + topRight.x) / 2, (topLeft.y + bottomLeft.y) / 2, Mathf.Abs(topLeft.x - topRight.x), Mathf.Abs(topLeft.y - bottomLeft.y));
-            Rect areaSelected = new Rect(topLeft.x , topLeft.y, Mathf.Abs(topLeft.x - topRight.x), Mathf.Abs(topLeft.y - bottomLeft.y));
-            Debug.Log(areaSelected.ToString());
+
             unitsSelected = new List<Unit>(allyUnits.Where(allyUnit => {
-                Debug.Log("Check: " + allyUnit.transform.position + " is " + areaSelected.Contains(new Vector2(allyUnit.transform.position.x, allyUnit.transform.position.y)));
-                return areaSelected.Contains(allyUnit.transform.position);
+                return allyUnit.transform.position.x > topLeft.x &&
+                       allyUnit.transform.position.x < topRight.x &&
+                       allyUnit.transform.position.y > bottomLeft.y &&
+                       allyUnit.transform.position.y < topLeft.y;
             }));
 
             unitsSelected.ForEach(unitSelected => {
                 StartCoroutine(unitSelected.UnitSelected());
             });
-        }*/
+        }
+
         updateDelegate();
     }
 
@@ -137,7 +139,7 @@ public class PlayManager : MonoBehaviour
         //
     }
 
-    private List<Unit> unitsSelected;
+    private List<Unit> unitsSelected = new List<Unit>();
 
     private Vector3? clickDown;
     private Vector3? clickUp;
@@ -154,7 +156,7 @@ public class PlayManager : MonoBehaviour
             pointTarget = null;
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) && unitSelected == null) {
+        if (Input.GetKeyDown(KeyCode.Mouse0)) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -162,15 +164,16 @@ public class PlayManager : MonoBehaviour
             //Debug.Log("tag: " + hit.collider.tag);
             if (hit.collider.tag == "AllySelection")
             {
-                Unit unit = hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
-                unitSelected = unit;
                 unitsSelected = new List<Unit>();
+                Unit unit = hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
+                //unitSelected = unit;
+                //unitsSelected = new List<Unit>();
                 unitsSelected.Add(unit);
-                StartCoroutine(unitSelected.UnitSelected());
+                StartCoroutine(unit.UnitSelected());
                 return;
             }
         }
-        if (Input.GetKeyDown(KeyCode.Mouse0) && unitSelected != null) {
+        if (Input.GetKeyDown(KeyCode.Mouse0) && unitsSelected.Count > 0) {
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -188,7 +191,7 @@ public class PlayManager : MonoBehaviour
             {
                 Unit unit = hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
                 unitSelected = unit;
-                unitsSelected = new List<Unit>();
+                //unitsSelected = new List<Unit>();
                 unitsSelected.Add(unit);
                 StartCoroutine(unitSelected.UnitSelected());
                 pointTarget = null;
@@ -198,9 +201,12 @@ public class PlayManager : MonoBehaviour
             }
             else {
                 Vector3 positionSelected = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 9f));
-                Debug.DrawLine(unitSelected.transform.position, positionSelected, Color.white, 0.5f);
+                //Debug.DrawLine(unitSelected.transform.position, positionSelected, Color.white, 0.5f);
                 if (positionSelected.y < limitLineTopAllyUnit && positionSelected.y > limitLineBottomAllyUnit) {
-                    unitSelected.positionToGo = positionSelected;
+                    //unitSelected.positionToGo = positionSelected;
+                    unitsSelected.ForEach(unitSelected => {
+                        unitSelected.positionToGo = positionSelected;
+                    });
                 }
                 else {
                     
@@ -210,7 +216,6 @@ public class PlayManager : MonoBehaviour
             }
             return;
         }
-/* 
         if (Input.GetKeyDown(KeyCode.Mouse0)) {
             clickDown = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 9f));
         }
@@ -220,10 +225,12 @@ public class PlayManager : MonoBehaviour
         }
 
         if (Input.GetKeyUp(KeyCode.Mouse0)) {
-            //clickUp = null;
-            //clickDown = null;
+            clickUp = null;
+            clickDown = null;
+            LineRenderer line = GetComponent<LineRenderer>();
+            line.positionCount = 0;
+            line.SetPositions(new Vector3[0]);
         }
-        */
     }
 
     public void Spawn(GameObject unitPrefab) {
