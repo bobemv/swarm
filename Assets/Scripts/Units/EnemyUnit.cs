@@ -18,6 +18,8 @@ public class EnemyUnit : Unit
 
         unitState = new IdleEnemyUnitState();
         unitTargetingState = new ClosestTargetingEnemyUnitState();
+
+        transform.rotation = Quaternion.Euler(0, 0, 180);
     }
 
     // Update is called once per frame

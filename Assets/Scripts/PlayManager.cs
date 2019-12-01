@@ -162,7 +162,7 @@ public class PlayManager : MonoBehaviour
 
             Physics.Raycast(ray, out hit);
             //Debug.Log("tag: " + hit.collider.tag);
-            if (hit.collider.tag == "AllySelection")
+            if (hit.collider && hit.collider.tag == "AllySelection")
             {
                 unitsSelected = new List<Unit>();
                 Unit unit = hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
@@ -179,7 +179,7 @@ public class PlayManager : MonoBehaviour
             RaycastHit hit;
 
             Physics.Raycast(ray, out hit);
-            if (hit.collider.tag == "AlienSelection")
+            if (hit.collider && hit.collider.tag == "AlienSelection")
             {
                 Unit unit = hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
                 
@@ -187,7 +187,7 @@ public class PlayManager : MonoBehaviour
                 pointTarget = null;
                 return;
             }
-            if (hit.collider.tag == "AllySelection")
+            if (hit.collider && hit.collider.tag == "AllySelection")
             {
                 Unit unit = hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
                 unitSelected = unit;
