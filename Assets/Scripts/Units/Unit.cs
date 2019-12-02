@@ -114,7 +114,21 @@ public class Unit : MonoBehaviour
         _selectionMark.enabled = isSelected;
     }
 
+    /*public void SetUnitSelected() {
+        if (UnitSelectedCoroutine == null)
+        {
+            StartCoroutine
+        }
+    }
 
+    public void SetUnitNotSelected() {
+        if (UnitSelectedCoroutine == null)
+        {
+            StartCoroutine
+        }
+    }*/
+
+    public Coroutine UnitSelectedCoroutine;
     public IEnumerator UnitSelected() {
         SelectUnit(true);
         while(_playManager.isUnitSelected(this)) {
