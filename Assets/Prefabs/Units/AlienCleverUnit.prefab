@@ -114,12 +114,13 @@ MonoBehaviour:
   _livesTextPrefab: {fileID: 743003154341952562, guid: 4bb682a092eae5b4b9e7c3d9fc97553f,
     type: 3}
   _turnRate: 1.5
-  _speed: 2
+  _speed: 1.5
   _selectionMark: {fileID: 926381382146685731}
   radiusStopPosition: 0.5
   _pointTargetMarkInstance: {fileID: 0}
   biteRate: 0.5
-  _dodgeChance: 0.2
+  timeFrozenThreshold: 1
+  _dodgeChance: 0.4
 --- !u!212 &3481956402755093275
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -203,11 +204,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 897900389016041380}
     m_Modifications:
-    - target: {fileID: -9054026372763628259, guid: 525247568ae3bfa4280c5360c78d699f,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4861953555306473885, guid: 525247568ae3bfa4280c5360c78d699f,
         type: 3}
       propertyPath: m_Name
@@ -282,6 +278,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -9054026372763628259, guid: 525247568ae3bfa4280c5360c78d699f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 333143854181886235, guid: 525247568ae3bfa4280c5360c78d699f,
         type: 3}

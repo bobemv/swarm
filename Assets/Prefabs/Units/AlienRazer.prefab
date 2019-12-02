@@ -75,6 +75,7 @@ MonoBehaviour:
   radiusStopPosition: 2
   _pointTargetMarkInstance: {fileID: 0}
   biteRate: 1
+  timeFrozenThreshold: 0.8
   _attractField: {fileID: 8018426537566201069}
 --- !u!212 &9140072114731227562
 SpriteRenderer:
@@ -193,11 +194,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 897900389016041380}
     m_Modifications:
-    - target: {fileID: -9054026372763628259, guid: 525247568ae3bfa4280c5360c78d699f,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4861953555306473885, guid: 525247568ae3bfa4280c5360c78d699f,
         type: 3}
       propertyPath: m_Name
@@ -272,6 +268,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -9054026372763628259, guid: 525247568ae3bfa4280c5360c78d699f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 333143854181886235, guid: 525247568ae3bfa4280c5360c78d699f,
         type: 3}

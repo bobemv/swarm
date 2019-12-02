@@ -12,4 +12,11 @@ public class AlienCleverUnit : EnemyUnit
         //transform.position = new Vector3(positionToDash.x, positionToDash.y, transform.position.z);
         transform.Translate(positionToDash.x, positionToDash.y, 0);
     }
+
+    override protected void UpdateLives() {
+        if (lives <= 0) {
+            EnemyUnit.alienCleverUnitDestroyed++;
+        }
+        base.UpdateLives();
+    }
 }

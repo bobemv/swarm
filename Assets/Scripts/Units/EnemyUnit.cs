@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class EnemyUnit : Unit
 {
+    static public int alienStandardUnitDestroyed = 0;
+    static public int alienCleverUnitDestroyed = 0;
+    static public int alienRazerUnitDestroyed = 0;
     public float biteRate;
 
     protected IEnemyUnitState unitState;
     protected IEnemyUnitState unitTargetingState;
+    [SerializeField] protected float timeFrozenThreshold;
+
+    private Color freezeColor = new Color(0, 126, 255);
+    private bool isFrozen = false;
+    private float currentTimeFrozen = 0;
 
     //public float biteRadius;
 
@@ -25,6 +33,16 @@ public class EnemyUnit : Unit
     // Update is called once per frame
     override protected void UpdateUnit()
     {
+        if (isFrozen)
+        {
+            currentTimeFrozen += Time.deltaTime;
+            if (currentTimeFrozen > timeFrozenThreshold) {
+                isFrozen = false;
+                GetComponent<SpriteRenderer>().color = Color.white;
+                currentTimeFrozen = 0;
+            }
+            return;
+        }
         base.UpdateUnit();
 
         IEnemyUnitState state;
@@ -46,5 +64,19 @@ public class EnemyUnit : Unit
         
         unitTarget.Damage();
         return;
+    }
+
+    virtual public void Freeze() {
+        isFrozen = true;
+        GetComponent<SpriteRenderer>().color = freezeColor;
+
+        unitTarget.Damage();
+        return;
+    }
+
+    static public void ResetStats() {
+        alienStandardUnitDestroyed = 0;
+        alienCleverUnitDestroyed = 0;
+        alienRazerUnitDestroyed = 0;
     }
 }

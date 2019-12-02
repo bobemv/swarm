@@ -162,7 +162,7 @@ MonoBehaviour:
   _selectionMark: {fileID: 5663075216526500027}
   radiusStopPosition: 0.5
   _pointTargetMarkInstance: {fileID: 150156248309281655}
-  _bulletPrefab: {fileID: 1082204739001828526, guid: 5a69de90b1a06f349bf8bb124d0fb686,
+  _bulletPrefab: {fileID: 1082204739001828526, guid: 52b85ff2e47856343a061c90cfaf12e0,
     type: 3}
   fireRate: 1
 --- !u!61 &4964332654269562202
@@ -182,7 +182,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.76, y: 0.92}
+    oldSize: {x: 0.84, y: 0.92}
     newSize: {x: 0.76, y: 0.92}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -229,7 +229,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 540a875bb684fa9499bfb33758df1940, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 741ba55519504554599c53fcddd7195b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 1
@@ -342,11 +342,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3550652600270600124}
     m_Modifications:
-    - target: {fileID: -9054026372763628259, guid: 525247568ae3bfa4280c5360c78d699f,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4861953555306473885, guid: 525247568ae3bfa4280c5360c78d699f,
         type: 3}
       propertyPath: m_Name
@@ -422,7 +417,7 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.8
       objectReference: {fileID: 0}
-    - target: {fileID: 2254017117713227641, guid: 525247568ae3bfa4280c5360c78d699f,
+    - target: {fileID: -9054026372763628259, guid: 525247568ae3bfa4280c5360c78d699f,
         type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -457,6 +452,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2254017117713227641, guid: 525247568ae3bfa4280c5360c78d699f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 525247568ae3bfa4280c5360c78d699f, type: 3}

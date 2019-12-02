@@ -31,7 +31,7 @@ public class Respawn : MonoBehaviour
         float currentNumber = 0;
         while (currentNumber < _number) {
             float newPositionX = Random.Range(Mathf.Max(-_limit, -7), Mathf.Min(_limit, 7));
-            transform.Translate(new Vector3(newPositionX, 0, 0));
+            transform.position = new Vector3(newPositionX, transform.position.y, transform.position.z);
             Instantiate(_alienPrefab, transform.position, Quaternion.identity);
             currentNumber++;
             yield return new WaitForSeconds(_spawnTime);

@@ -32,4 +32,11 @@ public class AlienStandardUnit : EnemyUnit
         unitState.Update(this, _playManager);
 
     }
+
+    override protected void UpdateLives() {
+        if (lives <= 0) {
+            EnemyUnit.alienStandardUnitDestroyed++;
+        }
+        base.UpdateLives();
+    }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Linq;
 
 public class PlayManager : MonoBehaviour
@@ -35,13 +36,15 @@ public class PlayManager : MonoBehaviour
     private MultiDelegate updateDelegate;
 
     private bool isGameStarted = false;
+    private bool isGameOver = false;
+    [Header("UI")]
     [SerializeField]
-    private GameObject _startButton, _timerText;
+    private GameObject _startButton, _timerText, _gameStats, _alienStandardStat, _alienCleverStat, _alienRazerStat, _gameOver;
 
     private float timer;
 
     private float limitLineTopAllyUnit = -1f;
-    private float limitLineBottomAllyUnit = -2.9f;
+    private float limitLineBottomAllyUnit = -5f;
 
     public Unit unitSelected;
     public Unit unitTarget;
@@ -72,8 +75,10 @@ public class PlayManager : MonoBehaviour
         enemyUnits = new List<Unit>(enemyUnitsInstances.Select(enemyUnitsInstance => enemyUnitsInstance.GetComponent<Unit>()));
         
         UpdateTimer();
+        UpdateGameStats();
         DisableButtonsAllyUnits();
         CheckSelectUnit();
+        CheckGameOver();
 
         if (isMassiveSelection && clickUp.HasValue && clickDown.HasValue) {
             LineRenderer line = GetComponent<LineRenderer>();
@@ -124,13 +129,14 @@ public class PlayManager : MonoBehaviour
     }
 
     private void DisableButtonsAllyUnits() {
-        _unitButtons.ForEach(button => button.interactable = !(allyUnits.Count == _maxAllyUnits));
+        _unitButtons.ForEach(button => button.interactable = !(allyUnits.Count == _maxAllyUnits) && !isGameOver);
     }
 
     public void StartGame() {
         isGameStarted = true;
         _startButton.SetActive(false);
-        _timerText.SetActive(true);
+        //_timerText.SetActive(true);
+        _gameStats.SetActive(true);
         _IANormal.StartIA();
     }
 
@@ -142,8 +148,26 @@ public class PlayManager : MonoBehaviour
         _timerText.GetComponent<Text>().text = string.Format("{0:0.0}", timer);
     }
 
-    public void GameOver() {
-        //
+    private void UpdateGameStats() {
+        if (!isGameStarted) {
+            return;
+        }
+        _alienStandardStat.GetComponentInChildren<Text>().text = EnemyUnit.alienStandardUnitDestroyed.ToString();
+        _alienCleverStat.GetComponentInChildren<Text>().text = EnemyUnit.alienCleverUnitDestroyed.ToString();
+        _alienRazerStat.GetComponentInChildren<Text>().text = EnemyUnit.alienRazerUnitDestroyed.ToString();
+    }
+
+    private void CheckGameOver() {
+        if (isGameStarted && allyUnits.Count == 0)
+        {
+            isGameStarted = false;
+            isGameOver = true;
+            _gameOver.SetActive(true);
+        }
+    }
+
+    public void Restart() {
+        SceneManager.LoadScene(0);
     }
 
     private List<AllyUnit> unitsSelected = new List<AllyUnit>();

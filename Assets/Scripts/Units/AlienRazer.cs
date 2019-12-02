@@ -15,4 +15,11 @@ public class AlienRazer : EnemyUnit
         EnemyUnit[] aliensOrbiting = GetComponentsInChildren<EnemyUnit>();
         _attractField.SetActive(aliensOrbiting.Length < 1000);
     }
+
+    override protected void UpdateLives() {
+        if (lives <= 0) {
+            EnemyUnit.alienRazerUnitDestroyed++;
+        }
+        base.UpdateLives();
+    }
 }

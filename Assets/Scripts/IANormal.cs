@@ -31,8 +31,8 @@ public class IANormal : MonoBehaviour
         GameObject currentHordeInstance;
         int numHordesBeat = 0;
 
-        while (numHordesBeat < _hordesPrefabs.Count) {
-            currentHordeInstance = Instantiate(_hordesPrefabs[numHordesBeat]);
+        while (true) {
+            currentHordeInstance = Instantiate(_hordesPrefabs[Random.Range(0, _hordesPrefabs.Count)]);
 
             while(currentHordeInstance != null) {
                 yield return new WaitForSeconds(0.5f);
