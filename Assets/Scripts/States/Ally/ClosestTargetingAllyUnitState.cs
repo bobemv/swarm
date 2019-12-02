@@ -6,20 +6,14 @@ public class ClosestTargetingAllyUnitState : IAllyUnitState
 {
 
     public IAllyUnitState CheckChangeState(AllyUnit unit, PlayManager environment) {
-        if (environment.isUnitSelected(unit)) {
-            if (environment.pointTarget.HasValue && environment.unitTarget == null) {
-                return new ClosestToPointTargetingAllyUnitState();
-            }
+        if (unit.pointTarget.HasValue) {
+            return new ClosestToPointTargetingAllyUnitState();
         }
         return null;
     }
 
     public void Update(AllyUnit unit, PlayManager environment) {
-        if (environment.unitTarget != null && environment.isUnitSelected(unit)) {
-            unit.unitTarget = environment.unitTarget;
-            unit.pointTarget = null;
-        }
-        if (unit.unitTarget != null) {
+        if (unit.pointTarget.HasValue) {
             return;
         }
         float minDistance = Mathf.Infinity;
