@@ -71,8 +71,9 @@ MonoBehaviour:
     type: 3}
   _turnRate: 0.3
   _speed: 0.3
-  _selectionMark: {fileID: 0}
+  _selectionMark: {fileID: 3181057841638512055}
   radiusStopPosition: 2
+  _pointTargetMarkInstance: {fileID: 0}
   biteRate: 1
   _attractField: {fileID: 8018426537566201069}
 --- !u!212 &9140072114731227562
@@ -292,6 +293,12 @@ PrefabInstance:
 --- !u!4 &2588900051557450807 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 977667435888958621, guid: 525247568ae3bfa4280c5360c78d699f,
+    type: 3}
+  m_PrefabInstance: {fileID: 3349765232778172586}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &3181057841638512055 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: -9054026372763628259, guid: 525247568ae3bfa4280c5360c78d699f,
     type: 3}
   m_PrefabInstance: {fileID: 3349765232778172586}
   m_PrefabAsset: {fileID: 0}

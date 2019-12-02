@@ -47,7 +47,7 @@ public class PlayManager : MonoBehaviour
     public Unit unitTarget;
     public Vector3? pointTarget;
 
-    float massiveSelectionTimeThreshold = 0.2f;
+    float massiveSelectionTimeThreshold = 0.12f;
     float massiveSelectionCurrentTime = 0f;
     bool isMassiveSelection = false;
 
@@ -86,16 +86,19 @@ public class PlayManager : MonoBehaviour
             line.positionCount = 5;
             line.SetPositions(lineVertices);
 
-
-            unitsSelected = new List<Unit>(allyUnits.Where(allyUnit => {
-                return allyUnit.transform.position.x > topLeft.x &&
-                       allyUnit.transform.position.x < topRight.x &&
-                       allyUnit.transform.position.y > bottomLeft.y &&
-                       allyUnit.transform.position.y < topLeft.y;
-            }));
+            unitsSelected = new List<AllyUnit>();
+            allyUnits.ForEach(allyUnit => {
+                if (allyUnit.transform.position.x > topLeft.x &&
+                    allyUnit.transform.position.x < topRight.x &&
+                    allyUnit.transform.position.y > bottomLeft.y &&
+                    allyUnit.transform.position.y < topLeft.y)
+                {
+                    unitsSelected.Add((AllyUnit)allyUnit);
+                }
+            });
 
             unitsSelected.ForEach(unitSelected => {
-                StartCoroutine(unitSelected.UnitSelected());
+                unitSelected.SelectUnit(true);
             });
         }
 
@@ -143,7 +146,7 @@ public class PlayManager : MonoBehaviour
         //
     }
 
-    private List<Unit> unitsSelected = new List<Unit>();
+    private List<AllyUnit> unitsSelected = new List<AllyUnit>();
 
     private Vector3? clickDown;
     private Vector3? clickUp;
@@ -153,107 +156,93 @@ public class PlayManager : MonoBehaviour
     }
 
     private void CheckSelectUnit() {
-        //mouse 0 keydown
-            //0 selected
-                //ray
-                //if ally, add to selected
-                //if enemy, nothing happens
-            //>0 selected
-                //ray
-                //if enemy, set target enemy to all selected
-                //if space movable, move units
-                //if space no movable, set target point to all selected
-            //set initial position for massive selection
-
         if (Input.GetKeyDown(KeyCode.Mouse0)) {
             clickDown = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 9f));
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            Physics.Raycast(ray, out hit);
-            
-            if (unitsSelected.Count == 0) {
-                if (hit.collider && hit.collider.tag == "AllySelection")
-                {
-                    //unitsSelected = new List<Unit>();
-                    Unit unit = hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
-                    //unitSelected = unit;
-                    //unitsSelected = new List<Unit>();
-                    unitsSelected.Add(unit);
-                    StartCoroutine(unit.UnitSelected());
-                }
-                if (hit.collider && hit.collider.tag == "AlienSelection")
-                {
-                    //
-                }
-            }
-            else if (unitsSelected.Count > 0) {
-                if (hit.collider && hit.collider.tag == "AlienSelection")
-                {
-                    Unit unit = hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
-                    
-                    unitsSelected.ForEach(unitSelected => {
-                        unitSelected.unitTarget = unit;
-                        unitSelected.pointTarget = null;
-                    });
-                }
-                else
-                {
-                    Vector3 positionSelected = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 9f));
-
-                    if (positionSelected.y < limitLineTopAllyUnit && positionSelected.y > limitLineBottomAllyUnit) {
-                        //unitSelected.positionToGo = positionSelected;
-                        unitsSelected.ForEach(unitSelected => {
-                            unitSelected.positionToGo = positionSelected;
-                        });
-                    }
-                    else {
-                        unitsSelected.ForEach(unitSelected => {
-                            unitSelected.unitTarget = null;
-                            unitSelected.pointTarget = positionSelected;
-                        });
-                    }   
-                }
-            }
         }
-        //mouse 0 key
-            //add time to massiveSelectionCurrentTime
-            //massiveSelectionCurrentTime > massiveSelectionTimeThreshold
-                //isMassiveSelection = true
-                //set final position por massive selection
         if (Input.GetKey(KeyCode.Mouse0)) {
             massiveSelectionCurrentTime += Time.deltaTime;
             if (massiveSelectionCurrentTime > massiveSelectionTimeThreshold)
             {
                 isMassiveSelection = true;
                 clickUp = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 9f));
+                unitsSelected.ForEach(unitSelected => {
+                    unitSelected.SelectUnit(false);
+                });
+                unitsSelected = new List<AllyUnit>();
+                unitTarget = null;
+                pointTarget = null;
             }
         }
 
-        //mouse 0 keyup
-            //isMassiveSelection = false
-            //clear unitTarget, pointTarget, massiveSelectioCurrentTime
-
         if (Input.GetKeyUp(KeyCode.Mouse0)) {
+
+            if (massiveSelectionCurrentTime < massiveSelectionTimeThreshold) {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                Physics.Raycast(ray, out hit);
+                
+                if (unitsSelected.Count == 0) {
+                    if (hit.collider && hit.collider.tag == "AllySelection")
+                    {
+                        //unitsSelected = new List<Unit>();
+                        AllyUnit unit = (AllyUnit) hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
+                        //unitSelected = unit;
+                        //unitsSelected = new List<Unit>();
+                        unitsSelected.Add(unit);
+                        unit.SelectUnit(true);
+                    }
+                    if (hit.collider && hit.collider.tag == "AlienSelection")
+                    {
+                        //
+                    }
+                }
+                else if (unitsSelected.Count > 0) {
+                    if (hit.collider && hit.collider.tag == "AlienSelection")
+                    {
+                        Unit unit = hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
+                        
+                        unitsSelected.ForEach(unitSelected => {
+                            unitSelected.unitTarget = unit;
+                            unitSelected.pointTarget = null;
+                        });
+                    }
+                    else
+                    {
+                        Vector3 positionSelected = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 9f));
+
+                        if (positionSelected.y < limitLineTopAllyUnit && positionSelected.y > limitLineBottomAllyUnit) {
+                            //unitSelected.positionToGo = positionSelected;
+                            unitsSelected.ForEach(unitSelected => {
+                                unitSelected.positionToGo = positionSelected;
+                            });
+                        }
+                        else {
+                            unitsSelected.ForEach(unitSelected => {
+                                unitSelected.unitTarget = null;
+                                unitSelected.pointTarget = positionSelected;
+                            });
+                        }   
+                    }
+                }
+            }
+            
+            massiveSelectionCurrentTime = 0f;
             isMassiveSelection = false;
             clickUp = null;
             clickDown = null;
             unitTarget = null;
             pointTarget = null;
-            massiveSelectionCurrentTime = 0f;
             LineRenderer line = GetComponent<LineRenderer>();
             line.positionCount = 0;
             line.SetPositions(new Vector3[0]);
         }
 
-        //mouse 1
-            //clear all information: unitsSelected, unitTarget, pointTarget, isMassiveSelection = false, massiveSelectioCurrentTime = 0
         if (Input.GetKeyDown(KeyCode.Mouse1)) {
-            //UnselectAll();
-            //unitSelected = null;
-   
-            unitsSelected = new List<Unit>();
+            unitsSelected.ForEach(unitSelected => {
+                unitSelected.SelectUnit(false);
+            });
+            unitsSelected = new List<AllyUnit>();
             unitTarget = null;
             pointTarget = null;
             isMassiveSelection = false;

@@ -11,6 +11,8 @@ public class AllyUnit : Unit
 
     private IAllyUnitState unitState;
     private IAllyUnitState unitTargetingState;
+
+    private bool isSelected = false;
     // Start is called before the first frame update
     override protected void StartUnit()
     {
@@ -36,6 +38,7 @@ public class AllyUnit : Unit
             unitState = state;
         }
         unitState.Update(this, _playManager);
+        UpdateSelectionTarget();
         base.UpdateUnit();
     }
 
@@ -43,5 +46,46 @@ public class AllyUnit : Unit
         
         Instantiate(_bulletPrefab, transform.position, transform.rotation);
         return;
+    }
+
+    override public void SelectUnit(bool _isSelected) {
+
+        isSelected = _isSelected;
+        base.SelectUnit(_isSelected);
+    }
+
+
+    private void UpdateSelectionTarget() {
+        if (isSelected)
+        {
+            if (unitTarget != null) {
+                unitTarget.SelectUnit(true);
+                if (_selectLine)
+                {
+                    _selectLine.enabled = true;
+                }
+            }
+            if (pointTarget != null) {
+                //Debug.DrawLine(pointTarget.GetValueOrDefault() - Vector3.up, pointTarget.GetValueOrDefault() + Vector3.up, Color.red);
+                //Debug.DrawLine(pointTarget.GetValueOrDefault() - Vector3.left, pointTarget.GetValueOrDefault() + Vector3.left, Color.red);
+                if (_pointTargetMarkInstance) {
+                    _pointTargetMarkInstance.SetActive(true);
+                }
+                if (_selectLine)
+                {
+                    _selectLine.enabled = true;
+                }
+            }
+        }
+        else {
+            SelectUnit(false);
+            _selectLine.enabled = false;
+            if (_pointTargetMarkInstance) {
+                _pointTargetMarkInstance.SetActive(false);
+            }
+            if (unitTarget != null) {
+                unitTarget.SelectUnit(false);
+            }
+        }
     }
 }

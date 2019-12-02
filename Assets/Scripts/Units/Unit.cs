@@ -115,6 +115,8 @@ public class Unit : MonoBehaviour
     }
 
     /*public void SetUnitSelected() {
+        SelectUnit(true);
+
         if (UnitSelectedCoroutine == null)
         {
             StartCoroutine
@@ -126,7 +128,7 @@ public class Unit : MonoBehaviour
         {
             StartCoroutine
         }
-    }*/
+    }
 
     public Coroutine UnitSelectedCoroutine;
     public IEnumerator UnitSelected() {
@@ -161,5 +163,5 @@ public class Unit : MonoBehaviour
             unitTarget.SelectUnit(false);
         }
 
-    }
+    }*/
 }
