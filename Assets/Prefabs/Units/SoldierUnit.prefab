@@ -54,8 +54,9 @@ MonoBehaviour:
     type: 3}
   _turnRate: 1.5
   _speed: 3
-  _selectionMark: {fileID: 6019354179862328031}
+  _selectionMark: {fileID: 5663075216526500027}
   radiusStopPosition: 0.5
+  _pointTargetMarkInstance: {fileID: 0}
   _bulletPrefab: {fileID: 1082204739001828526, guid: 5a69de90b1a06f349bf8bb124d0fb686,
     type: 3}
   fireRate: 1
@@ -141,6 +142,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3550652600270600124}
     m_Modifications:
+    - target: {fileID: -9054026372763628259, guid: 525247568ae3bfa4280c5360c78d699f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4861953555306473885, guid: 525247568ae3bfa4280c5360c78d699f,
         type: 3}
       propertyPath: m_Name
@@ -209,12 +215,12 @@ PrefabInstance:
     - target: {fileID: 977667435888958621, guid: 525247568ae3bfa4280c5360c78d699f,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 977667435888958621, guid: 525247568ae3bfa4280c5360c78d699f,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 2254017117713227641, guid: 525247568ae3bfa4280c5360c78d699f,
         type: 3}
@@ -224,7 +230,33 @@ PrefabInstance:
     - target: {fileID: 333143854181886235, guid: 525247568ae3bfa4280c5360c78d699f,
         type: 3}
       propertyPath: m_Radius
-      value: 0.5
+      value: 1.5062416
+      objectReference: {fileID: 0}
+    - target: {fileID: 4503417085457269866, guid: 525247568ae3bfa4280c5360c78d699f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4503417085457269866, guid: 525247568ae3bfa4280c5360c78d699f,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4503417085457269866, guid: 525247568ae3bfa4280c5360c78d699f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 4503417085457269866, guid: 525247568ae3bfa4280c5360c78d699f,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c3259b93b13ff5748aff3780a09f69df,
+        type: 3}
+    - target: {fileID: 4503417085457269866, guid: 525247568ae3bfa4280c5360c78d699f,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 525247568ae3bfa4280c5360c78d699f, type: 3}
@@ -234,9 +266,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5534618399155858854}
   m_PrefabAsset: {fileID: 0}
---- !u!23 &6019354179862328031 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 2254017117713227641, guid: 525247568ae3bfa4280c5360c78d699f,
+--- !u!212 &5663075216526500027 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: -9054026372763628259, guid: 525247568ae3bfa4280c5360c78d699f,
     type: 3}
   m_PrefabInstance: {fileID: 5534618399155858854}
   m_PrefabAsset: {fileID: 0}

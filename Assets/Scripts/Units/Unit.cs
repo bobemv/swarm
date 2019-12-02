@@ -28,11 +28,15 @@ public class Unit : MonoBehaviour
     
 
     [SerializeField]
-    protected MeshRenderer _selectionMark;
+    protected SpriteRenderer _selectionMark;
 
     public float radiusStopPosition;
 
     protected PlayManager _playManager;
+
+    protected LineRenderer _selectLine;
+    [SerializeField]
+    protected GameObject _pointTargetMarkInstance;
 
     void Start() {
         StartUnit();
@@ -40,6 +44,7 @@ public class Unit : MonoBehaviour
 
     virtual protected void StartUnit() {
         _playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
+        _selectLine = GetComponent<LineRenderer>();
         CreateAndLinkLivesText();
     }
 
@@ -52,6 +57,14 @@ public class Unit : MonoBehaviour
         pointTargetv2 = pointTarget.HasValue ? pointTarget.GetValueOrDefault() : Vector3.zero;
         UpdateRotation();
         UpdateLives();
+        if (_selectLine && (unitTarget || pointTarget.HasValue)) {
+            _selectLine.positionCount = 2;
+            _selectLine.SetPosition(0, transform.position);
+            _selectLine.SetPosition(1, unitTarget ? unitTarget.transform.position : pointTarget.Value);
+        }
+        if (_pointTargetMarkInstance && pointTarget.HasValue) {
+            _pointTargetMarkInstance.transform.position = pointTarget.Value;
+        }
     }
 
     virtual protected void CreateAndLinkLivesText() {
@@ -107,14 +120,29 @@ public class Unit : MonoBehaviour
         while(_playManager.isUnitSelected(this)) {
             if (unitTarget != null) {
                 unitTarget.SelectUnit(true);
+                if (_selectLine)
+                {
+                    _selectLine.enabled = true;
+                }
             }
             if (pointTarget != null) {
                 Debug.DrawLine(pointTarget.GetValueOrDefault() - Vector3.up, pointTarget.GetValueOrDefault() + Vector3.up, Color.red);
                 Debug.DrawLine(pointTarget.GetValueOrDefault() - Vector3.left, pointTarget.GetValueOrDefault() + Vector3.left, Color.red);
+                if (_pointTargetMarkInstance) {
+                    _pointTargetMarkInstance.SetActive(true);
+                }
+                if (_selectLine)
+                {
+                    _selectLine.enabled = true;
+                }
             }
             yield return null;
         }
         SelectUnit(false);
+        _selectLine.enabled = false;
+        if (_pointTargetMarkInstance) {
+            _pointTargetMarkInstance.SetActive(false);
+        }
         if (unitTarget != null) {
             unitTarget.SelectUnit(false);
         }

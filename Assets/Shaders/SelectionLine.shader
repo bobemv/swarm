@@ -5,6 +5,7 @@
         _MainTex ("Texture", 2D) = "white" {}
         _Color ("Color", Color) = (1., 1., 1., 1.)
         _Speed ("Speed", Range(0, 10)) = 1
+        [MaterialToggle] _Flip ("Flip", float) = 0
     }
     SubShader
     {
@@ -40,11 +41,16 @@
             float4 _MainTex_ST;
             float _Speed;
             float4 _Color;
+            float _Flip;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
+                if (_Flip > 0)
+                {
+                    v.uv.xy = v.uv.yx;
+                }
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.uv.y -= _Speed * _Time.y;
                 return o;
