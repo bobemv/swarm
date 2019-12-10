@@ -13,11 +13,17 @@ public class AllyUnit : Unit
     private IAllyUnitState unitTargetingState;
 
     private bool isSelected = false;
+    protected LineRenderer _selectLine;
+
+    [SerializeField]
+    protected GameObject _pointTargetMarkInstance;
+
     // Start is called before the first frame update
     override protected void StartUnit()
     {
         base.StartUnit();
 
+        _selectLine = GetComponent<LineRenderer>();
         unitState = new IdleAllyUnitState();
         unitTargetingState = new ClosestTargetingAllyUnitState();
     }
@@ -39,6 +45,18 @@ public class AllyUnit : Unit
         }
         unitState.Update(this, _playManager);
         UpdateSelectionTarget();
+
+        if (_selectLine && (unitTarget || pointTarget.HasValue))
+        {
+            _selectLine.positionCount = 2;
+            _selectLine.SetPosition(0, transform.position);
+            _selectLine.SetPosition(1, unitTarget ? unitTarget.transform.position : pointTarget.Value);
+        }
+        if (_pointTargetMarkInstance && pointTarget.HasValue)
+        {
+            _pointTargetMarkInstance.transform.position = pointTarget.Value;
+        }
+
         base.UpdateUnit();
     }
 
@@ -76,6 +94,11 @@ public class AllyUnit : Unit
                     _selectLine.enabled = true;
                 }
             }
+            else {
+                if (_pointTargetMarkInstance) {
+                    _pointTargetMarkInstance.SetActive(false);
+                }
+            }
         }
         else {
             SelectUnit(false);
@@ -87,5 +110,21 @@ public class AllyUnit : Unit
                 unitTarget.SelectUnit(false);
             }
         }
+    }
+
+    virtual public void SetTarget(Unit target)
+    {
+        if (isSelected)
+        {
+            if (unitTarget)
+            {
+                unitTarget.SelectUnit(false);
+            }
+            if (target)
+            {
+                target.SelectUnit(true);
+            }
+        }
+        unitTarget = target;
     }
 }

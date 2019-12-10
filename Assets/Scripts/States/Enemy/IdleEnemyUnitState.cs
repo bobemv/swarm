@@ -6,14 +6,14 @@ public class IdleEnemyUnitState : IEnemyUnitState
 {
 
     virtual public IEnemyUnitState CheckChangeState(EnemyUnit unit, PlayManager environment) {
-        if (unit.unitTarget == null) {
+        if (unit.GetUnitTarget() == null) {
             return null;
         }
-        if (Vector3.Distance(unit.unitTarget.transform.position, unit.transform.position) > unit.radiusStopPosition) {
+        if (Vector3.Distance(unit.GetUnitTarget().transform.position, unit.transform.position) > unit.GetRadiusStopPosition()) {
             return new MovementEnemyUnitState();
         }
         
-        if (unit.unitTarget != null) {
+        if (unit.GetUnitTarget() != null) {
             return new BitingEnemyUnitState();
         }
         return null;

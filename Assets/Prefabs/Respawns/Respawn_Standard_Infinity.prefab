@@ -45,6 +45,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alienPrefab: {fileID: 897900389016041376, guid: 4161bb3458047fd43a35879bf924301b,
     type: 3}
-  _spawnTime: 0.025
+  _spawnTime: 0.04
   _number: 600
   _limit: 0

@@ -1080,12 +1080,12 @@ GameObject:
   - component: {fileID: 470382191}
   - component: {fileID: 470382190}
   m_Layer: 5
-  m_Name: StartGame (1)
+  m_Name: GameOver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &470382189
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1974,7 +1974,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2055450331}
-        m_MethodName: StartGame
+        m_MethodName: Restart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4813,7 +4813,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 540a875bb684fa9499bfb33758df1940, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 741ba55519504554599c53fcddd7195b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5415,12 +5415,13 @@ MonoBehaviour:
   _unitButtons:
   - {fileID: 467336914}
   - {fileID: 39383656}
-  _startButton: {fileID: 701630065}
+  _startGameUI: {fileID: 258077379}
   _timerText: {fileID: 371019885}
   _gameStats: {fileID: 1497739508}
   _alienStandardStat: {fileID: 648209326}
   _alienCleverStat: {fileID: 1850364470}
   _alienRazerStat: {fileID: 771414184}
+  _gameOver: {fileID: 470382188}
   unitSelected: {fileID: 0}
   unitTarget: {fileID: 0}
 --- !u!4 &2055450332
@@ -5705,6 +5706,7 @@ MonoBehaviour:
   _hordesPrefabs:
   - {fileID: 7862751315885442837, guid: d228fa23d1fc4c845affbe1e57bdcb90, type: 3}
   - {fileID: 7862751315885442837, guid: 1b08b3440f3ada14bbe31cdc14734564, type: 3}
+  - {fileID: 3613334520605108226, guid: dd37f954056df064f88f5d50da9c6c35, type: 3}
 --- !u!4 &2090030718
 Transform:
   m_ObjectHideFlags: 0

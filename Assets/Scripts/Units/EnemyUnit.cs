@@ -12,10 +12,12 @@ public class EnemyUnit : Unit
     protected IEnemyUnitState unitState;
     protected IEnemyUnitState unitTargetingState;
     [SerializeField] protected float timeFrozenThreshold;
+    [SerializeField] protected int biteDamage;
 
     private Color freezeColor = new Color(0, 126, 255);
     private bool isFrozen = false;
     private float currentTimeFrozen = 0;
+    private int unitsTargetingSelf = 0;
 
     //public float biteRadius;
 
@@ -62,7 +64,7 @@ public class EnemyUnit : Unit
 
     virtual public void Bite() {
         
-        unitTarget.Damage();
+        unitTarget.Damage(biteDamage);
         return;
     }
 
@@ -70,7 +72,7 @@ public class EnemyUnit : Unit
         isFrozen = true;
         GetComponent<SpriteRenderer>().color = freezeColor;
 
-        unitTarget.Damage();
+        unitTarget.Damage(biteDamage);
         return;
     }
 
@@ -79,4 +81,19 @@ public class EnemyUnit : Unit
         alienCleverUnitDestroyed = 0;
         alienRazerUnitDestroyed = 0;
     }
+
+    override public void SelectUnit(bool isSelected)
+    {
+        if (isSelected)
+        {
+            unitsTargetingSelf++;
+        }
+        else
+        {
+            unitsTargetingSelf--;
+        }
+
+        base.SelectUnit(unitsTargetingSelf > 0);
+    }
+
 }

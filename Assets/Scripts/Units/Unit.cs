@@ -5,47 +5,24 @@ using UnityEngine.Animations;
 
 public class Unit : MonoBehaviour
 {
-    public Vector3 positionToGo = Vector3.zero;
-    public Unit unitTarget;
-    public Vector3? pointTarget;
-    public Vector3 pointTargetv2;
+    [SerializeField] protected float _maxLives;
+    [SerializeField] protected GameObject _livesTextPrefab;
+    [SerializeField] protected float _turnRate;
+    [SerializeField] protected SpriteRenderer _selectionMark;
+    [SerializeField] private float _radiusStopPosition;
+    [SerializeField] private float _speed;
 
-    [SerializeField]
-    protected float _maxLives;
     protected float lives;
-
-    [SerializeField]
-    protected GameObject _livesTextPrefab;
+    protected PlayManager _playManager;
     
     private TextMesh livesText;
 
     private GameObject livesTextInstance;
-
-    [SerializeField]
-    protected float _turnRate;
-
-    public float _speed;
-    
-
-    [SerializeField]
-    protected SpriteRenderer _selectionMark;
-
-    public float radiusStopPosition;
-
-    protected PlayManager _playManager;
-
-    protected LineRenderer _selectLine;
-    [SerializeField]
-    protected GameObject _pointTargetMarkInstance;
-
+    private Vector3 positionToGo = Vector3.zero;
+    protected Unit unitTarget;
+    protected Vector3? pointTarget;
     void Start() {
         StartUnit();
-    }
-
-    virtual protected void StartUnit() {
-        _playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
-        _selectLine = GetComponent<LineRenderer>();
-        CreateAndLinkLivesText();
     }
 
     void Update()
@@ -53,21 +30,17 @@ public class Unit : MonoBehaviour
         UpdateUnit();
     }
 
-    virtual protected void UpdateUnit() {
-        pointTargetv2 = pointTarget.HasValue ? pointTarget.GetValueOrDefault() : Vector3.zero;
-        UpdateRotation();
-        UpdateLives();
-        if (_selectLine && (unitTarget || pointTarget.HasValue)) {
-            _selectLine.positionCount = 2;
-            _selectLine.SetPosition(0, transform.position);
-            _selectLine.SetPosition(1, unitTarget ? unitTarget.transform.position : pointTarget.Value);
-        }
-        if (_pointTargetMarkInstance && pointTarget.HasValue) {
-            _pointTargetMarkInstance.transform.position = pointTarget.Value;
-        }
+    virtual protected void StartUnit() {
+        _playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
+        CreateAndLinkLivesText();
     }
 
-    virtual protected void CreateAndLinkLivesText() {
+    virtual protected void UpdateUnit() {
+        UpdateRotation();
+        UpdateLives();
+    }
+
+    private void CreateAndLinkLivesText() {
         lives = _maxLives;
         livesTextInstance = Instantiate(_livesTextPrefab);
         livesText = livesTextInstance.GetComponent<TextMesh>();
@@ -79,7 +52,7 @@ public class Unit : MonoBehaviour
         livesTextInstance.GetComponent<PositionConstraint>().AddSource(source);
     }
 
-    virtual protected void UpdateRotation() {
+    private void UpdateRotation() {
         if (unitTarget == null) {
             return;
         }
@@ -94,23 +67,54 @@ public class Unit : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * _turnRate);
     }
 
-    virtual public void Damage() {
-        lives--;
-    }
-
     virtual protected void UpdateLives() {
         if (lives < _maxLives) {
             livesText.text = lives + "/" + _maxLives;
         }
 
         if (lives <= 0) {
-            Destroy(gameObject);
             Destroy(livesTextInstance);
+            Destroy(gameObject);
         }
     }
 
-    virtual public void SelectUnit(bool isSelected) {
+    virtual public void SelectUnit() {
+        _selectionMark.enabled = true;
+    }
+    virtual public void UnselectUnit() {
+        _selectionMark.enabled = false;
+    }
+    public void Damage(int damage)
+    {
+        lives-=damage;
+    }
 
-        _selectionMark.enabled = isSelected;
+    public float GetRadiusStopPosition() {
+        return _radiusStopPosition;   
+    }
+
+    public float GetSpeed() {
+        return _speed;   
+    }
+
+    public Vector3 GetPositionToGo() {
+        return positionToGo;   
+    }
+    public void SetPositionToGo(Vector3 newPositionToGo) {
+        positionToGo = newPositionToGo;
+    }
+
+    public Unit GetUnitTarget() {
+        return unitTarget;   
+    }
+    public void SetUnitTarget(Unit newUnitTarget) {
+        unitTarget = newUnitTarget;
+    }
+
+    public Vector3? GetPointTarget() {
+        return pointTarget;   
+    }
+    public void SetPointTarget(Vector3? newPointTarget) {
+        pointTarget = newPointTarget;
     }
 }

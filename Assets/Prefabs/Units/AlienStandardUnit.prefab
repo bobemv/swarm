@@ -74,7 +74,7 @@ MonoBehaviour:
   radiusStopPosition: 0.5
   _pointTargetMarkInstance: {fileID: 0}
   biteRate: 0.5
-  timeFrozenThreshold: 0.3
+  timeFrozenThreshold: 1
 --- !u!212 &8929548482941920690
 SpriteRenderer:
   m_ObjectHideFlags: 0

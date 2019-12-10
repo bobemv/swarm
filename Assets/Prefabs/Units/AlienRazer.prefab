@@ -74,8 +74,8 @@ MonoBehaviour:
   _selectionMark: {fileID: 3181057841638512055}
   radiusStopPosition: 2
   _pointTargetMarkInstance: {fileID: 0}
-  biteRate: 1
-  timeFrozenThreshold: 0.8
+  biteRate: 4
+  timeFrozenThreshold: 0.2
   _attractField: {fileID: 8018426537566201069}
 --- !u!212 &9140072114731227562
 SpriteRenderer:

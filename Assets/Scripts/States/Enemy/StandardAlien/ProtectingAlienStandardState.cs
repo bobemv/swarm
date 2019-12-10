@@ -13,7 +13,7 @@ public class ProtectingAlienStandardState : IEnemyUnitState
     }
 
     public void Update(EnemyUnit unit, PlayManager environment) {
-        //unit.transform.Translate(Vector3.Normalize(new Vector3(unit.unitTarget.transform.position.x - unit.transform.position.x, unit.unitTarget.transform.position.y - unit.transform.position.y, 0)) * unit._speed * Time.deltaTime, Space.World);
+        //unit.transform.Translate(Vector3.Normalize(new Vector3(unit.GetUnitTarget().transform.position.x - unit.transform.position.x, unit.GetUnitTarget().transform.position.y - unit.transform.position.y, 0)) * unit.GetSpeed() * Time.deltaTime, Space.World);
         //float r = Vector3.Distance(unit.transform.position, alienProtecting.transform.position);
         //float x = Mathf.Cos(Time.deltaTime / 100) * r + alienProtecting.transform.position.x;
         //float y = Mathf.Sin(Time.deltaTime / 100) * r + alienProtecting.transform.position.y;

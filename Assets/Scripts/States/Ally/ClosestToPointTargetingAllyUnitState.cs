@@ -6,27 +6,27 @@ public class ClosestToPointTargetingAllyUnitState : IAllyUnitState
 {
 
     public IAllyUnitState CheckChangeState(AllyUnit unit, PlayManager environment) {
-        if (!unit.pointTarget.HasValue) {
+        if (!unit.GetPointTarget().HasValue) {
             return new ClosestTargetingAllyUnitState();
         }
         return null;
     }
 
     public void Update(AllyUnit unit, PlayManager environment) {
-        if (!unit.pointTarget.HasValue) {
+        if (!unit.GetPointTarget().HasValue) {
             return;
         }
         float minDistance = Mathf.Infinity;
         Unit target = null;
         for (int i = 0; i < environment.enemyUnits.Count; i++) {
             float distance;
-            distance = Vector3.Distance(environment.enemyUnits[i].transform.position, unit.pointTarget.GetValueOrDefault());
+            distance = Vector3.Distance(environment.enemyUnits[i].transform.position, unit.GetPointTarget().GetValueOrDefault());
             if (distance < minDistance) {
                 minDistance = distance;
                 target = environment.enemyUnits[i];
             }
         }
-        unit.unitTarget = target;
+        unit.SetTarget(target);
         return;
     }
 

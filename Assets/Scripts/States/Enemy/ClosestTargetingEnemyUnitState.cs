@@ -7,7 +7,7 @@ public class ClosestTargetingEnemyUnitState : IEnemyUnitState
 
     public IEnemyUnitState CheckChangeState(EnemyUnit unit, PlayManager environment) {
         /*if (unit == environment.unitSelected) {
-            if (environment.pointTarget.HasValue) {
+            if (environment.GetPointTarget().HasValue) {
                 return new ClosestToPointTargetingEnemyUnitState();
             }
         }*/
@@ -15,7 +15,7 @@ public class ClosestTargetingEnemyUnitState : IEnemyUnitState
     }
 
     public void Update(EnemyUnit unit, PlayManager environment) {
-        if (unit.unitTarget != null) {
+        if (unit.GetUnitTarget() != null) {
             return;
         }
         float minDistance = Mathf.Infinity;
@@ -28,7 +28,7 @@ public class ClosestTargetingEnemyUnitState : IEnemyUnitState
                 target = environment.allyUnits[i];
             }
         }
-        unit.unitTarget = target;
+        unit.SetUnitTarget(target);
     }
 
 }

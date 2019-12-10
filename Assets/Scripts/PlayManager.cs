@@ -39,7 +39,7 @@ public class PlayManager : MonoBehaviour
     private bool isGameOver = false;
     [Header("UI")]
     [SerializeField]
-    private GameObject _startButton, _timerText, _gameStats, _alienStandardStat, _alienCleverStat, _alienRazerStat, _gameOver;
+    private GameObject _startGameUI, _timerText, _gameStats, _alienStandardStat, _alienCleverStat, _alienRazerStat, _gameOver;
 
     private float timer;
 
@@ -114,7 +114,7 @@ public class PlayManager : MonoBehaviour
         int position = 0;
         Vector3 emptyPosition = leffMostPosition + new Vector3(position * cellSizeAllyUnitsPositions, 0, 0);
 
-        while (allyUnits.Exists(unit => unit.positionToGo == emptyPosition)) {
+        while (allyUnits.Exists(unit => unit.GetPositionToGo() == emptyPosition)) {
             emptyPosition += new Vector3(cellSizeAllyUnitsPositions, 0, 0);
         }
 
@@ -134,7 +134,7 @@ public class PlayManager : MonoBehaviour
 
     public void StartGame() {
         isGameStarted = true;
-        _startButton.SetActive(false);
+        _startGameUI.SetActive(false);
         //_timerText.SetActive(true);
         _gameStats.SetActive(true);
         _IANormal.StartIA();
@@ -199,80 +199,77 @@ public class PlayManager : MonoBehaviour
         }
 
         if (Input.GetKeyUp(KeyCode.Mouse0)) {
+            unitTarget = null;
+            pointTarget = null;
+            isMassiveSelection = false;
+            clickUp = null;
+            clickDown = null;
+            LineRenderer line = GetComponent<LineRenderer>();
+            line.positionCount = 0;
+            line.SetPositions(new Vector3[0]);
 
             if (massiveSelectionCurrentTime < massiveSelectionTimeThreshold) {
+                unitsSelected.ForEach(unitSelected => {
+                    unitSelected.SelectUnit(false);
+                });
+                unitsSelected = new List<AllyUnit>();
+                massiveSelectionCurrentTime = 0f;
+
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
 
                 Physics.Raycast(ray, out hit);
-                
-                if (unitsSelected.Count == 0) {
-                    if (hit.collider && hit.collider.tag == "AllySelection")
-                    {
-                        //unitsSelected = new List<Unit>();
-                        AllyUnit unit = (AllyUnit) hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
-                        //unitSelected = unit;
-                        //unitsSelected = new List<Unit>();
-                        unitsSelected.Add(unit);
-                        unit.SelectUnit(true);
-                    }
-                    if (hit.collider && hit.collider.tag == "AlienSelection")
-                    {
-                        //
-                    }
+               
+                if (hit.collider && hit.collider.tag == "AllySelection")
+                {
+                    //unitsSelected = new List<Unit>();
+                    AllyUnit unit = (AllyUnit) hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
+                    //unitSelected = unit;
+                    //unitsSelected = new List<Unit>();
+                    unitsSelected.Add(unit);
+                    unit.SelectUnit(true);
                 }
-                else if (unitsSelected.Count > 0) {
-                    if (hit.collider && hit.collider.tag == "AlienSelection")
-                    {
-                        Unit unit = hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
-                        
-                        unitsSelected.ForEach(unitSelected => {
-                            unitSelected.unitTarget = unit;
-                            unitSelected.pointTarget = null;
-                        });
-                    }
-                    else
-                    {
-                        Vector3 positionSelected = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 9f));
-
-                        if (positionSelected.y < limitLineTopAllyUnit && positionSelected.y > limitLineBottomAllyUnit) {
-                            //unitSelected.positionToGo = positionSelected;
-                            unitsSelected.ForEach(unitSelected => {
-                                unitSelected.positionToGo = positionSelected;
-                            });
-                        }
-                        else {
-                            unitsSelected.ForEach(unitSelected => {
-                                unitSelected.unitTarget = null;
-                                unitSelected.pointTarget = positionSelected;
-                            });
-                        }   
-                    }
+                if (hit.collider && hit.collider.tag == "AlienSelection")
+                {
+                    //
                 }
             }
-            
-            massiveSelectionCurrentTime = 0f;
-            isMassiveSelection = false;
-            clickUp = null;
-            clickDown = null;
-            unitTarget = null;
-            pointTarget = null;
-            LineRenderer line = GetComponent<LineRenderer>();
-            line.positionCount = 0;
-            line.SetPositions(new Vector3[0]);
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1)) {
-            unitsSelected.ForEach(unitSelected => {
-                unitSelected.SelectUnit(false);
-            });
-            unitsSelected = new List<AllyUnit>();
-            unitTarget = null;
-            pointTarget = null;
-            isMassiveSelection = false;
-            massiveSelectionCurrentTime = 0f;
-            clickUp = null;
-            clickDown = null;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            Physics.Raycast(ray, out hit);
+            if (hit.collider && hit.collider.tag == "AlienSelection")
+            {
+                Unit unit = hit.collider.gameObject.GetComponent<UnitSelection>().GetUnit();
+
+                unitsSelected.ForEach(unitSelected => {
+                    unitSelected.SetTarget(unit);
+                    //unitSelected.unitTarget = unit;
+                    unitSelected.SetPointTarget(null);
+                });
+            }
+            else
+            {
+                Vector3 positionSelected = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 9f));
+
+                if (positionSelected.y < limitLineTopAllyUnit && positionSelected.y > limitLineBottomAllyUnit)
+                {
+                    unitsSelected.ForEach(unitSelected => {
+                        unitSelected.SetPositionToGo(positionSelected);
+                    });
+                }
+                else
+                {
+                    unitsSelected.ForEach(unitSelected => {
+                        unitSelected.SetTarget(null);
+                        unitSelected.SetPointTarget(positionSelected);
+                    });
+                }
+            }
+
         }
     }
 
@@ -282,6 +279,6 @@ public class PlayManager : MonoBehaviour
         
         Unit unit = unitSpawned.GetComponent<Unit>();
         AddAllyUnit(unit);
-        unit.positionToGo = positionToGo;
+        unit.SetPositionToGo(positionToGo);
     }
 }

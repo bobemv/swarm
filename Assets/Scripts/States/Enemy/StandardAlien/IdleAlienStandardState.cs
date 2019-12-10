@@ -6,14 +6,14 @@ public class IdleAlienStandardState : IdleEnemyUnitState
 {
 
     override public IEnemyUnitState CheckChangeState(EnemyUnit unit, PlayManager environment) {
-        if (unit.unitTarget == null) {
+        if (unit.GetUnitTarget() == null) {
             return null;
         }
-        if (Vector3.Distance(unit.unitTarget.transform.position, unit.transform.position) > unit.radiusStopPosition) {
+        if (Vector3.Distance(unit.GetUnitTarget().transform.position, unit.transform.position) > unit.GetRadiusStopPosition()) {
             return new MovementAlienStandardState();
         }
         
-        if (unit.unitTarget != null) {
+        if (unit.GetUnitTarget() != null) {
             return new BitingEnemyUnitState();
         }
 
